@@ -18,7 +18,7 @@
     ansible.builtin.command:
       cmd: /sbin/apk upgrade -U -a -v
     become: yes
-    become-method: su
+    #become-method: su
 
   - name: reboot system
     ansible.builtin.command:
