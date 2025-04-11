@@ -12,11 +12,14 @@
   - name: update package list
     ansible.builtin.command:
       cmd: /sbin/apk update -v
+    become: yes
 
   - name: update all packages
     ansible.builtin.command:
       cmd: /sbin/apk upgrade -U -a -v
+    become: yes
 
   - name: reboot system
     ansible.builtin.command:
       cmd: /sbin/reboot -d 5 --simulate
+    become: yes
