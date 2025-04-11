@@ -10,11 +10,13 @@
 
   tasks:
   - name: update package list
-    command: /sbin/apk update -v
+    ansible.builtin.command:
+      cmd: /sbin/apk update -v
 
-  tasks:
   - name: update all packages
-    command: /sbin/apk upgrade -U -a -v
+    ansible.builtin.command:
+      cmd: /sbin/apk upgrade -U -a -v
 
   - name: reboot system
-    command: /sbin/reboot -d 5 --simulate
+    ansible.builtin.command:
+      cmd: /sbin/reboot -d 5 --simulate
