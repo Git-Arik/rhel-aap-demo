@@ -6,7 +6,7 @@
 #
 ---
 - name: Alpine Maintenance update
-  hosts: web
+  #hosts: web
 
   tasks:
   - name: update package list
