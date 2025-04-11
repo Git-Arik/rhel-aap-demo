@@ -11,15 +11,17 @@
   tasks:
   - name: update package list
     ansible.builtin.command:
-      cmd: /usr/bin/sudo /sbin/apk update -v
-    #become: yes
+      cmd: /sbin/apk update -v
+    become: yes
 
   - name: update all packages
     ansible.builtin.command:
-      cmd: /usr/bin/sudo /sbin/apk upgrade -U -a -v
-    #become: yes
+      cmd: /sbin/apk upgrade -U -a -v
+    become: yes
+    become-method: su
 
   - name: reboot system
     ansible.builtin.command:
-      cmd: /usr/bin/sudo /sbin/reboot -d 5 --simulate
-    #become: yes
+      cmd: /sbin/reboot -d 5 --simulate
+    become: yes
+    become-method: sudo
