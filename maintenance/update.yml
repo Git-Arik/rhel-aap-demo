@@ -21,8 +21,8 @@
     #become: yes
     #become_method: sudo
 
-  - name: reboot system
-    ansible.builtin.command:
-      cmd: /usr/bin/sudo /sbin/reboot -d 5 --simulate
-    #become: yes
-    #become_method: sudo
+#  - name: reboot system
+#    ansible.builtin.command:
+#      cmd: /usr/bin/sudo /sbin/reboot -d 5
+#    #become: yes
+#    #become_method: sudo
