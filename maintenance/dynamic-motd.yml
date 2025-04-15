@@ -31,14 +31,14 @@
     - name: Check original Alpine motd file against md5sum
       command: md5sum /etc/motd
       register: motd_md5sum
-      failed_when: motd_md5sum.stdout != "c0a59404b013ff89521279a95d097a8b"
+      failed_when: motd_md5sum.stdout != "c0a59404b013ff89521279a95d097a8b  /etc/motd"
       ignore_errors: yes
 
     - name: Backup original Alpine motd file if md5sum does not match
       copy:
         src: /etc/motd
         dest: /etc/motd.bak
-      when: motd_md5sum.stdout != "c0a59404b013ff89521279a95d097a8b"
+      when: motd_md5sum.stdout != "c0a59404b013ff89521279a95d097a8b  /etc/motd"
 
     - name: Check for presence of motd script
       stat:
