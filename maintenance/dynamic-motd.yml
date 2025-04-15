@@ -7,15 +7,15 @@
     md5sum: "c0a59404b013ff89521279a95d097a8b"
 
   tasks:
-    - name: Run a command with sudo
-      become: yes
-      become_method: sudo
-      command: whoami
-      register: result
+    - name: Run a command with sudo
+      become: yes
+      become_method: sudo
+      command: whoami
+      register: result
 
-    - name: Output result
-      debug:
-        msg: "Command executed as: {{ result.stdout }}"
+    - name: Output result
+      debug:
+        msg: "Command executed as: {{ result.stdout }}"
 
     - name: Check for presence of crond service
       command: rc-service crond status
