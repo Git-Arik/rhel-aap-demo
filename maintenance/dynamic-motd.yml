@@ -76,6 +76,10 @@
       when: not motd_script.stat.exists
       register: motd_script
 
+    - name: Output of motd_script
+      debug:
+        msg: "{{motd_script}}"
+
     - name: Ensure correct file permissions
       command: /usr/bin/sudo /bin/chmod 0755 /etc/periodic/{{ placeholder }}/{{ file }}
       when: motd_script.stat.exists
