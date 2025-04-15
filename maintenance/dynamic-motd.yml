@@ -69,11 +69,15 @@
     - name: Check for presence of motd script
       stat:
         path: /etc/periodic/{{ placeholder }}/{{ file }}
-      register: motd_script
+      register: motd_stat
+
+    - name: Output of motd_stat
+      debug:
+        msg: "{{motd_stat}}"
 
     - name: Create motd script if not present
       command: /usr/bin/sudo /bin/touch /etc/periodic/{{ placeholder }}/{{ file }}
-      when: not motd_script.stat.exists
+      when: not motd_stat.stat.exists
       register: motd_script
 
     - name: Output of motd_script
@@ -82,7 +86,7 @@
 
     - name: Ensure correct file permissions
       command: /usr/bin/sudo /bin/chmod 0755 /etc/periodic/{{ placeholder }}/{{ file }}
-      when: motd_script.stat.exists
+      when: not motd_script.failed
 
     - name: Check execution of the file
       command: /usr/bin/sudo run-parts --test /etc/periodic/{{ placeholder }}
