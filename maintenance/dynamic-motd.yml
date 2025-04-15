@@ -42,6 +42,7 @@
       when: motd_md5sum.failed
 
     - name: Backup original Alpine motd file if md5sum does not match
+      become: yes
       copy:
         src: /etc/motd
         dest: /etc/motd.bak
