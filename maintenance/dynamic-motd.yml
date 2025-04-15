@@ -9,13 +9,13 @@
     - name: Check for presence of crond service
       command: rc-service crond status
       register: crond_status
-      failed_when: crond_status.rc != 0
+      failed_when: crond_status.failed
       ignore_errors: yes
 
     - name: Fail if crond service is not present
       fail:
         msg: "crond service is not present"
-      when: crond_status.rc != 0
+      when: crond_status.failed
 
     - name: Check if crond service is running
       command: rc-service crond status
@@ -27,30 +27,31 @@
       command: rc-service crond start
       when: "'started' not in crond_running.stdout"
       register: crond_start
-      failed_when: crond_start.rc != 0
+      failed_when: crond_start.failed
 
     - name: Check original Alpine motd file against md5sum
-      command: md5sum /etc/motd
+      shell: "echo 'c0a59404b013ff89521279a95d097a8b  /etc/motd' | md5sum --check --strict"
       register: motd_md5sum
-      failed_when: motd_md5sum.stdout != "c0a59404b013ff89521279a95d097a8b  /etc/motd"
+      failed_when: motd_md5sum.failed
       ignore_errors: yes
 
     - name: Output md5sum of the original Alpine motd file
       debug:
-        msg: "MD5 sum of the original Alpine motd file: ''"
+        msg: "{{motd_md5sum}}"
+      when: motd_md5sum.failed
 
     - name: Backup original Alpine motd file if md5sum does not match
       copy:
         src: /etc/motd
         dest: /etc/motd.bak
-      when: motd_md5sum.stdout != "c0a59404b013ff89521279a95d097a8b  /etc/motd"
+      when: not motd_md5sum.failed
       register: motd_backup
-      failed_when: motd_backup != 0
+      failed_when: motd_backup.failed
 
     - name: Fail if motd backup fails
       fail:
         msg: "Backup of the original Alpine motd file failed"
-      when: motd_backup != 0
+      when: motd_backup.failed
 
     - name: Check for presence of motd script
       stat:
@@ -80,10 +81,10 @@
       become: yes
       command: run-parts --test /etc/periodic/{{ placeholder }}
       register: run_parts_test
-      failed_when: run_parts_test.rc != 0
+      failed_when: run_parts_test.failed
       ignore_errors: yes
 
     - name: Fail if run-parts test fails
       fail:
         msg: "run-parts test failed"
-      when: run_parts_test.rc != 0
+      when: run_parts_test.failed
