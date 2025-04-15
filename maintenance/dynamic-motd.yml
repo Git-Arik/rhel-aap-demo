@@ -34,10 +34,6 @@
       failed_when: "'started' not in crond_running.stdout"
       ignore_errors: yes
 
-    - name: Output of crond_running
-      debug:
-        msg: "{{crond_running}}"
-
     - name: Start crond service if not running
       command: rc-service crond start
       when: "'started' not in crond_running.stdout"
@@ -61,10 +57,6 @@
       register: motd_backup
       failed_when: motd_backup.failed
 
-    - name: Output of motd_backup
-      debug:
-        msg: "{{motd_backup}}"
-
     - name: Fail if motd backup fails
       fail:
         msg: "Backup of the original Alpine motd file failed"
@@ -74,10 +66,6 @@
       stat:
         path: /etc/periodic/{{ placeholder }}/{{ file }}
       register: motd_stat
-
-    - name: Output of motd_stat
-      debug:
-        msg: "{{motd_stat}}"
 
     - name: Create motd script if not present
       command: /usr/bin/sudo /bin/touch /etc/periodic/{{ placeholder }}/{{ file }}
