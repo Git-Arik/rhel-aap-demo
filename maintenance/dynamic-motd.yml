@@ -4,6 +4,7 @@
   vars:
     placeholder: "daily"
     file: "motd-script"
+    md5sum: "c0a59404b013ff89521279a95d097a8b"
 
   tasks:
     - name: Check for presence of crond service
@@ -30,7 +31,7 @@
       failed_when: crond_start.failed
 
     - name: Check original Alpine motd file against md5sum
-      shell: "echo 'c0a59404b013ff89521279a95d097a8b  /etc/motd' | md5sum --check --strict"
+      shell: "echo '{{md5sum}}  /etc/motd' | md5sum --check --strict"
       register: motd_md5sum
       failed_when: motd_md5sum.failed
       ignore_errors: yes
