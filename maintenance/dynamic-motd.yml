@@ -43,6 +43,7 @@
 
     - name: Backup original Alpine motd file if md5sum does match
       become: yes
+      become_method: sudo
       copy:
         src: /etc/motd
         dest: /etc/motd.bak
@@ -63,6 +64,7 @@
 
     - name: Create motd script if not present
       become: yes
+      become_method: sudo
       copy:
         content: |
           #!/bin/sh
@@ -82,6 +84,7 @@
 
     - name: Check execution of the file
       become: yes
+      become_method: sudo
       command: run-parts --test /etc/periodic/{{ placeholder }}
       register: run_parts_test
       failed_when: run_parts_test.failed
