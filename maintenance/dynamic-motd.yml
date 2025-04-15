@@ -4,6 +4,7 @@
   vars:
     placeholder: "daily"
     file: "motd-script"
+
   tasks:
     - name: Check for presence of crond service
       command: rc-service crond status
@@ -34,22 +35,22 @@
       failed_when: motd_md5sum.stdout != "c0a59404b013ff89521279a95d097a8b  /etc/motd"
       ignore_errors: yes
 
-#    - name: Output md5sum of the original Alpine motd file
-#      debug:
-#        msg: "MD5 sum of the original Alpine motd file: {{ motd_md5sum.stdout }}"
+    - name: Output md5sum of the original Alpine motd file
+      debug:
+        msg: "MD5 sum of the original Alpine motd file: ''"
 
     - name: Backup original Alpine motd file if md5sum does not match
       copy:
         src: /etc/motd
         dest: /etc/motd.bak
       when: motd_md5sum.stdout != "c0a59404b013ff89521279a95d097a8b  /etc/motd"
-      register: motd_backup
-      failed_when: motd_backup.rc != 0
+      register: motd_backup
+      failed_when: motd_backup.rc != 0
 
-    - name: Fail if motd backup fails
-      fail:
-        msg: "Backup of the original Alpine motd file failed"
-      when: motd_backup.rc != 0
+    - name: Fail if motd backup fails
+      fail:
+        msg: "Backup of the original Alpine motd file failed"
+      when: motd_backup.rc != 0
 
     - name: Check for presence of motd script
       stat:
