@@ -2,9 +2,9 @@
 - name: Alpine dynamic MOTD generator
   hosts: all
   vars:
-    placeholder: "daily"
-    file: "motd-script"
-    md5sum: "c0a59404b013ff89521279a95d097a8b"
+    placeholder: ""
+    file: ""
+    md5sum: ""
 
   tasks:
     - name: Run a command with sudo
