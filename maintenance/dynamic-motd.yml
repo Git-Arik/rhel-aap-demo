@@ -21,8 +21,12 @@
     - name: Check if crond service is running
       command: rc-service crond status
       register: crond_running
-      failed_when: "'started' not in crond_running.stdout"per
+      failed_when: "'started' not in crond_running.stdout"
       ignore_errors: yes
+
+    - name: Output of crond_running
+      debug:
+        msg: "{{crond_running}}"
 
     - name: Start crond service if not running
       command: rc-service crond start
