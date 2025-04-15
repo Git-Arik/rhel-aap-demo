@@ -67,6 +67,19 @@
         path: /etc/periodic/{{ placeholder }}/{{ file }}
       register: motd_stat
 
+    - name: Create motd script if not present
+      become: yes
+      become_method: sudo
+      copy:
+        content: |
+          #!/bin/sh
+          echo "Dynamic MOTD"
+        dest: /etc/periodic/{{ placeholder }}/{{ file }}
+        owner: root
+        group: root
+        mode: '0755'
+      when: not motd_script.stat.exists
+
     - name: Create motd script if not present
       command: /usr/bin/sudo /bin/touch /etc/periodic/{{ placeholder }}/{{ file }}
       when: not motd_stat.stat.exists
