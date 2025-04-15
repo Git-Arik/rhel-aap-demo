@@ -21,14 +21,14 @@
       debug:
         msg: "Command executed as: {{ result.stdout }}"
 
-    - name: Create motd script if not present
+    - name: Create motd script if not present
       become: yes
       become_method: sudo
-      copy:
-        content: |
-          #!/bin/sh
-          echo "Dynamic MOTD"
-        dest: /etc/periodic/daily/test
-        owner: root
-        group: root
-        mode: '0755'
+      copy:
+        content: |
+          #!/bin/sh
+          echo "Dynamic MOTD"
+        dest: /etc/periodic/daily/test
+        owner: root
+        group: root
+        mode: '0755'
