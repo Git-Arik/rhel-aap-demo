@@ -34,9 +34,9 @@
       failed_when: motd_md5sum.stdout != "c0a59404b013ff89521279a95d097a8b  /etc/motd"
       ignore_errors: yes
 
-    - name: Output md5sum of the original Alpine motd file
-      debug:
-        msg: "MD5 sum of the original Alpine motd file: {{ motd_md5sum.stdout }}"
+#    - name: Output md5sum of the original Alpine motd file
+#      debug:
+#        msg: "MD5 sum of the original Alpine motd file: {{ motd_md5sum.stdout }}"
 
     - name: Backup original Alpine motd file if md5sum does not match
       copy:
