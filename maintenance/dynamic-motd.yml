@@ -61,6 +61,10 @@
       register: motd_backup
       failed_when: motd_backup.failed
 
+    - name: Output of motd_backup
+      debug:
+        msg: "{{motd_backup}}"
+
     - name: Fail if motd backup fails
       fail:
         msg: "Backup of the original Alpine motd file failed"
@@ -71,6 +75,10 @@
         path: /etc/periodic/{{ placeholder }}/{{ file }}
       register: motd_stat
 
+    - name: Output of motd_stat
+      debug:
+        msg: "{{motd_stat}}"
+
     - name: Create motd script if not present
       command: /usr/bin/sudo /bin/touch /etc/periodic/{{ placeholder }}/{{ file }}
       when: not motd_stat.stat.exists
@@ -78,18 +86,19 @@
     - name: Check for presence of motd script
       stat:
         path: /etc/periodic/{{ placeholder }}/{{ file }}
-      when: not motd_stat.skipped
+      when: not motd_backup.failed
       register: motd_stat
 
     - name: Ensure correct file permissions
       command: /usr/bin/sudo /bin/chmod 0755 /etc/periodic/{{ placeholder }}/{{ file }}
-      when: not motd_script.failed
+      when: not motd_stat.stat.exists
 
     - name: Check execution of the file
       command: /usr/bin/sudo run-parts --test /etc/periodic/{{ placeholder }}
       register: run_parts_test
       failed_when: run_parts_test.failed
       ignore_errors: yes
+      when: motd_stat.stat.exists
 
     - name: Fail if run-parts test fails
       fail:
