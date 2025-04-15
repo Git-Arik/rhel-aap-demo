@@ -27,7 +27,7 @@
       command: rc-service crond start
       when: "'started' not in crond_running.stdout"
       register: crond_start
-      failed_when: crond_start.rc != 0
+      failed_when: crond_start.stdout != 0
 
     - name: Check original Alpine motd file against md5sum
       command: md5sum /etc/motd
@@ -45,12 +45,12 @@
         dest: /etc/motd.bak
       when: motd_md5sum.stdout != "c0a59404b013ff89521279a95d097a8b  /etc/motd"
       register: motd_backup
-      failed_when: motd_backup.rc != 0
+      failed_when: motd_backup.stdout != 0
 
     - name: Fail if motd backup fails
       fail:
         msg: "Backup of the original Alpine motd file failed"
-      when: motd_backup.rc != 0
+      when: motd_backup.stdout != 0
 
     - name: Check for presence of motd script
       stat:
