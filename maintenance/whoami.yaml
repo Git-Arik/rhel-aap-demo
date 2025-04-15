@@ -1,0 +1,22 @@
+---
+- name: Linux whoami check
+  hosts: all
+
+  tasks:
+    - name: Run a command without sudo
+      command: whoami
+      register: result
+
+    - name: Output result
+      debug:
+        msg: "Command executed as: {{ result.stdout }}"
+
+    - name: Run a command with sudo
+      become: yes
+      become_method: sudo
+      command: whoami
+      register: result
+
+    - name: Output result
+      debug:
+        msg: "Command executed as: {{ result.stdout }}"
