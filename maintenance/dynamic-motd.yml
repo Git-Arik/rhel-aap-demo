@@ -67,7 +67,7 @@
         path: /etc/periodic/{{ placeholder }}/{{ file }}
       register: motd_stat
 
-    - name: Create motd script if not present
+    - name: Create motd script if not present
       become: yes
       become_method: sudo
       copy:
