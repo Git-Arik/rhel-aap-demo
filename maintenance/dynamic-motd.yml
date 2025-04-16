@@ -78,7 +78,7 @@
         owner: root
         group: root
         mode: '0755'
-      when: not motd_script.stat.exists
+      when: not motd_stat.stat.exists
 
     - name: Create motd script if not present
       command: /usr/bin/sudo /bin/touch /etc/periodic/{{ placeholder }}/{{ file }}
