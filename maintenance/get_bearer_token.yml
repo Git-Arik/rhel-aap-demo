@@ -32,4 +32,8 @@
 
     - name: Display CML Bearer
       ansible.builtin.debug:
-        var: "{{ auth_response.json }}"
+        var: "{{ auth_response }}"
+
+    - name: Set my_token variable from response
+      set_fact:
+        bearer_token: "{{ auth_response.json }}"
