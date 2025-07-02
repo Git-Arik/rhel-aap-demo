@@ -4,7 +4,7 @@
   gather_facts: false
 
   vars:
-    cml_api_host: "192.168.100.198"
+    # cml_api_host: "192.168.100.198"
     cml_api_port: 443
     cml_api_url: "https://{{ cml_api_host }}/api/v0/system/maintenance_mode"
     # cml_api_url: "https://{{ ansible_host }}/api/v0/system/maintenance_mode"
