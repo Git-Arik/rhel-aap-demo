@@ -1,0 +1,31 @@
+---
+- name: Fetch Cisco CML Maintenance Mode Status
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    cml_api_host: "192.168.100.198"
+    cml_api_port: 443
+    cml_api_url: "https://{{ cml_api_host }}/api/v0/system/maintenance_mode"
+    # If authentication is needed, you can add:
+    # cml_api_username: "admin"
+    # cml_api_password: "password"
+
+  tasks:
+    - name: Query Cisco CML maintenance mode
+      ansible.builtin.uri:
+        url: "{{ cml_api_url }}"
+        method: GET
+        return_content: yes
+        validate_certs: no   # set to true if you trust the SSL certificate
+        headers:
+          Accept: "application/json"
+        # If authentication is needed, you can add:
+        # user: "{{ cml_api_username }}"
+        # password: "{{ cml_api_password }}"
+        # force_basic_auth: yes
+      register: cml_response
+
+    - name: Display CML maintenance mode status
+      ansible.builtin.debug:
+        msg: "Maintenance Mode: {{ cml_response.json.maintenance_mode }}"
