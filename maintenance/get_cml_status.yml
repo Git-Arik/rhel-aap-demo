@@ -1,6 +1,6 @@
 ---
 - name: Fetch Cisco CML Maintenance Mode Status
-  hosts: all
+  hosts: localhost
   gather_facts: false
 
   vars:
