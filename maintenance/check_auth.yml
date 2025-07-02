@@ -1,0 +1,25 @@
+---
+- name: Fetch Cisco CML Bearer Token
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    # cml_api_host: "192.168.100.198"
+    cml_api_port: 443
+    cml_api_url: "https://{{ cml_api_host }}/api/v0/authok"
+    # bearer_token: XXX
+
+- name: Query CML authok endpoint with Bearer token
+  ansible.builtin.uri:
+    url: "{{ cml_api_url }}"
+    method: GET
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ bearer_token }}"
+    return_content: yes
+    validate_certs: no  # set to yes if you have valid SSL certs
+  register: authok_response
+
+- name: Show authok response JSON
+  ansible.builtin.debug:
+    var: authok_response.json
