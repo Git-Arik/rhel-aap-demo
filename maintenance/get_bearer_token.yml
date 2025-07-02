@@ -9,7 +9,9 @@
     cml_api_url: "https://{{ cml_api_host }}/api/v0/authenticate"
     # If authentication is needed, you can add:
     # cml_api_username: "admin"
+    cml_api_username: {{ username }}
     # cml_api_password: "password"
+    cml_api_password: {{ password }}
 
   tasks:
     - name: Get Cisco CML Bearer Token
@@ -22,8 +24,8 @@
           Accept: "application/json"
         body: |
           {
-            "username": "{{ cml_username }}",
-            "password": "{{ cml_password }}"
+            "username": "{{ cml_api_username }}",
+            "password": "{{ cml_api_password }}"
           }
         body_format: json
       register: auth_response
