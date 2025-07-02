@@ -30,6 +30,6 @@
         body_format: json
       register: auth_response
 
-    - name: Display CML maintenance mode status
+    - name: Display CML Bearer
       ansible.builtin.debug:
-        var: "Maintenance Mode: {{ auth_response.json }}"
+        var: "{{ auth_response.json }}"
