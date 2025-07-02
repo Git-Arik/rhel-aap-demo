@@ -1,0 +1,33 @@
+---
+- name: Fetch Cisco CML Bearer Token
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    # cml_api_host: "192.168.100.198"
+    cml_api_port: 443
+    cml_api_url: "https://{{ cml_api_host }}/api/v0/authenticate"
+    # If authentication is needed, you can add:
+    # cml_api_username: "admin"
+    # cml_api_password: "password"
+
+  tasks:
+    - name: Get Cisco CML Bearer Token
+      ansible.builtin.uri:
+        url: "{{ cml_api_url }}"
+        method: POST
+        return_content: yes
+        validate_certs: no   # set to true if you trust the SSL certificate
+        headers:
+          Accept: "application/json"
+        body: |
+          {
+            "username": "{{ cml_username }}",
+            "password": "{{ cml_password }}"
+          }
+        body_format: json
+      register: auth_response
+
+    - name: Display CML maintenance mode status
+      ansible.builtin.debug:
+        var: "Maintenance Mode: {{ auth_response.json }}"
