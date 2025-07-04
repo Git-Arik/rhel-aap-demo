@@ -1,36 +1,49 @@
 ---
-- name: List podman images as current user and with sudo on localhost
-  hosts: localhost
-  gather_facts: yes
-  connection: local
-
+- name: List podman images on remote host X.Y.Z
+  hosts: all
+  gather_facts: yes  # gather facts for hostname, etc.
+  become: no        # normal user by default
+  ignore_errors: yes
   tasks:
-    - name: Show localhost name
-      ansible.builtin.debug:
-        msg: "Localhost name: {{ ansible_hostname }}"
 
-    - name: Show current user
+    - name: Show hostname on remote
       ansible.builtin.debug:
-        msg: "Current user: {{ ansible_env.USER }}"
+        msg: "Hostname: {{ ansible_hostname }}"
+      ignore_errors: yes
+
+    - name: Show current user on remote
+      ansible.builtin.shell: whoami
+      register: current_user_result
+      ignore_errors: yes
+
+    - name: Display current user on remote
+      ansible.builtin.debug:
+        msg: "Current user: {{ current_user_result.stdout }}"
+      ignore_errors: yes
 
     - name: List podman images as current user
       ansible.builtin.command: podman images
       register: podman_images_user
       ignore_errors: yes
 
+    - name: Display podman images as current user
+      ansible.builtin.debug:
+        msg: "Podman images (current user):"
+      ignore_errors: yes
+    - ansible.builtin.debug:
+        var: podman_images_user.stdout_lines
+      ignore_errors: yes
+
     - name: List podman images with sudo
-      ansible.builtin.shell: sudo podman images
+      ansible.builtin.command: podman images
+      become: yes
       register: podman_images_sudo
       ignore_errors: yes
 
-    - name: Show podman images (current user)
-      ansible.builtin.debug:
-        msg: "Podman images (current user):"
-    - ansible.builtin.debug:
-        var: podman_images_user.stdout_lines
-
-    - name: Show podman images (sudo)
+    - name: Display podman images with sudo
       ansible.builtin.debug:
         msg: "Podman images (sudo):"
+      ignore_errors: yes
     - ansible.builtin.debug:
         var: podman_images_sudo.stdout_lines
+      ignore_errors: yes
