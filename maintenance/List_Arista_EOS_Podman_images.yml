@@ -1,25 +1,17 @@
 ---
 - name: List podman images as current user and with sudo on localhost
   hosts: localhost
-  gather_facts: no
+  gather_facts: yes
   connection: local
 
   tasks:
-    - name: Display localhost name
-      ansible.builtin.command: hostname
-      register: hostname_result
-
     - name: Show localhost name
       ansible.builtin.debug:
-        msg: "Localhost name: {{ hostname_result.stdout }}"
-
-    - name: Display current user
-      ansible.builtin.command: whoami
-      register: current_user_result
+        msg: "Localhost name: {{ ansible_hostname }}"
 
     - name: Show current user
       ansible.builtin.debug:
-        msg: "Current user: {{ current_user_result.stdout }}"
+        msg: "Current user: {{ ansible_env.USER }}"
 
     - name: List podman images as current user
       ansible.builtin.command: podman images
