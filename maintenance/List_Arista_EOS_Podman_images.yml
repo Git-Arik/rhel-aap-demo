@@ -5,6 +5,22 @@
   connection: local
 
   tasks:
+    - name: Display localhost name
+      ansible.builtin.command: hostname
+      register: hostname_result
+
+    - name: Show localhost name
+      ansible.builtin.debug:
+        msg: "Localhost name: {{ hostname_result.stdout }}"
+
+    - name: Display current user
+      ansible.builtin.command: whoami
+      register: current_user_result
+
+    - name: Show current user
+      ansible.builtin.debug:
+        msg: "Current user: {{ current_user_result.stdout }}"
+
     - name: List podman images as current user
       ansible.builtin.command: podman images
       register: podman_images_user
