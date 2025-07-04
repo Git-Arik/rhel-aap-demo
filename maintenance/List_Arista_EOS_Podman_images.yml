@@ -1,6 +1,6 @@
 ---
 - name: List podman images on remote host X.Y.Z
-  hosts: all
+  hosts: localhost
   gather_facts: yes  # gather facts for hostname, etc.
   become: no        # normal user by default
   ignore_errors: yes
