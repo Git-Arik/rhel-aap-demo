@@ -1,0 +1,28 @@
+---
+- name: List podman images as current user and with sudo on localhost
+  hosts: localhost
+  gather_facts: no
+  connection: local
+
+  tasks:
+    - name: List podman images as current user
+      ansible.builtin.command: podman images
+      register: podman_images_user
+      ignore_errors: yes
+
+    - name: List podman images with sudo
+      ansible.builtin.shell: sudo podman images
+      register: podman_images_sudo
+      ignore_errors: yes
+
+    - name: Show podman images (current user)
+      ansible.builtin.debug:
+        msg: "Podman images (current user):"
+    - ansible.builtin.debug:
+        var: podman_images_user.stdout_lines
+
+    - name: Show podman images (sudo)
+      ansible.builtin.debug:
+        msg: "Podman images (sudo):"
+    - ansible.builtin.debug:
+        var: podman_images_sudo.stdout_lines
